@@ -1,21 +1,91 @@
 fun main() {
+    fun parseRotation1(initialPosition: Int, rotation: String): Pair<Int,Int> {
+        val direction = rotation.first()
+        val numberToMove = rotation.drop(1).toInt()
+
+        var currentPosition = initialPosition
+        var numberOfTimesZero = 0
+
+        repeat(numberToMove) {
+            when (direction) {
+                'R' -> currentPosition++
+                'L' -> currentPosition--
+            }
+
+            if (currentPosition < 0) {
+                currentPosition = 99
+            } else if (currentPosition > 99) {
+                currentPosition = 0
+            }
+        }
+
+        if (currentPosition == 0) {
+            numberOfTimesZero++
+        }
+
+        return Pair(currentPosition, numberOfTimesZero)
+    }
+
     fun part1(input: List<String>): Int {
-        return input.size
+        var currentPosition = 50
+        var numberOfTimesZero = 0
+
+        input.forEach { currentLine ->
+            val (nextPosition, additionalTimesZero) = parseRotation1(currentPosition, currentLine)
+
+            currentPosition = nextPosition
+            numberOfTimesZero += additionalTimesZero
+        }
+
+        return numberOfTimesZero
+    }
+
+    fun parseRotation2(initialPosition: Int, rotation: String): Pair<Int,Int> {
+        val direction = rotation.first()
+        val numberToMove = rotation.drop(1).toInt()
+
+        var currentPosition = initialPosition
+        var numberOfTimesZero = 0
+
+        repeat(numberToMove) {
+            when (direction) {
+                'R' -> currentPosition++
+                'L' -> currentPosition--
+            }
+
+            if (currentPosition < 0) {
+                currentPosition = 99
+            } else if (currentPosition > 99) {
+                currentPosition = 0
+            }
+
+            if (currentPosition == 0) {
+                numberOfTimesZero++
+            }
+        }
+
+        return Pair(currentPosition, numberOfTimesZero)
     }
 
     fun part2(input: List<String>): Int {
-        return input.size
+        var currentPosition = 50
+        var numberOfTimesZero = 0
+
+        input.forEach { currentLine ->
+            val (nextPosition, additionalTimesZero) = parseRotation2(currentPosition, currentLine)
+
+            currentPosition = nextPosition
+            numberOfTimesZero += additionalTimesZero
+        }
+
+        return numberOfTimesZero
     }
 
-    // Test if implementation meets criteria from the description, like:
-    check(part1(listOf("test_input")) == 1)
-
-    // Or read a large test input from the `src/Day01_test.txt` file:
-    val testInput = readInput("Day01_test")
-    check(part1(testInput) == 1)
-
-    // Read the input from the `src/Day01.txt` file.
     val input = readInput("Day01")
-    part1(input).println()
-    part2(input).println()
+//    val testInput = readInput("Day01_test")
+
+    val password1 = part1(input)
+    println("The first password is: $password1")
+    val password2 = part2(input)
+    println("The second password is: $password2")
 }
